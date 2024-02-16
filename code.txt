@@ -1,0 +1,56 @@
+To implement voice recognition and speech synthesis, you can use the Web Speech API which is built into most modern browsers. Here's a basic example of how you might modify the previous code to include these features:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple AI</title>
+</head>
+<body>
+    <button onclick="startListening()">Start Listening</button>
+    <p id="ai-response"></p>
+
+    <script>
+        var recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
+        recognition.lang = 'en-US';
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 5;
+
+        function startListening() {
+            recognition.start();
+        }
+
+        recognition.onresult = function(event) {
+            var input = event.results[0][0].transcript.toLowerCase();
+            var response = "";
+
+            if (input.includes("hello") || input.includes("hi") || input.includes("hey")) {
+                response = "Hello, how can I assist you today?";
+            } else if (input.includes("tell me a joke")) {
+                response = "Why don't scientists trust atoms? Because they make up everything!";
+            } else if (input.includes("what time is it")) {
+                response = "The current time is " + new Date().toLocaleTimeString();
+            } else if (input.includes("what is your favorite subject")) {
+                response = "As an AI, I don't have personal preferences. But I'm here to help you with any subject!";
+            } else if (input.includes("2+2") || input.includes("2 plus 2")) {
+                response = "The answer to 2+2 is 4.";
+            } else if (input.includes("2*2") || input.includes("2 mult 2")) {
+                response = "The answer to 2*2 is 4.";
+            } else {
+                response = "I'm sorry, I didn't understand that command.";
+            }
+
+            document.getElementById('ai-response').innerHTML = response;
+            speak(response);
+        }
+
+        function speak(text) {
+            var msg = new SpeechSynthesisUtterance(text);
+            window.speechSynthesis.speak(msg);
+        }
+    </script>
+</body>
+</html>
+```
+
+This code will start listening for voice input when you click the button, and it will respond to the same commands as before, but this time it will also speak the response out loud. Please note that this is a very basic example and real-world applications would require more robust error handling and feature checking. Also, the Web Speech API is not supported in all browsers, so you should check for compatibility before using it. Happy coding! 😊
